@@ -3,6 +3,7 @@
 
 #include "Exception.h"
 
+#include "DBConnect.h"
 
 int HTTPRequestHandler(PHTTP_REQUEST hRequest);
 
