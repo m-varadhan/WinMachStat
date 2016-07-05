@@ -14,6 +14,12 @@ namespace WinMachStat {
 		initHTTPServer();
 	}
 
+	HTTPServer::HTTPServer(HTTPRequestHandler rH) :
+		reqHandler(rH), HttpApiVersion(HTTPAPI_VERSION_2)
+	{
+		initHTTPServer();
+	}
+
 	int HTTPServer::Listen(int maxRequest)
 	{
 		ULONG			   result;

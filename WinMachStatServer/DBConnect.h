@@ -25,6 +25,8 @@ headers from cppconn/ and mysql_driver.h + mysql_util.h
 #include <cppconn/statement.h>
 #include "Exception.h"
 
+#include "Logger.h"
+
 
 namespace WinMachStat {
 	class Mysql {
@@ -48,34 +50,36 @@ namespace WinMachStat {
 			catch (...) {
 				throw Exception(ExceptionFormatter() << "Can't get to mysql driver:" << domain << ":" << db);
 			}
+			LOG(INFO) << "Created Instance of Driver " << db << ":" << con << ":" << stmt << ":" << res << ":";
 		}
 
 		~Mysql() {
-			if (con) {
-				delete con;
-				con = NULL;
-			}
-			//DisConnect();
+			DisConnect();
 		}
 
 		void DisConnect() {
-			if (con) {
-				//delete con;
+			if (con != NULL) {
+				LOG(INFO) << "Disconnecting DB Mysql";
+				delete con;
 				con = NULL;
+				LOG(INFO) << "Disconnected DB Mysql";
 			}
 		}
 
 		void Connect() {
 			if (driver) {
+				LOG(INFO) << "Connecting to DB Mysql:";
 				con = driver->connect(domain.c_str(), user.c_str(), passwd.c_str());
 				if (!con)
 					throw Exception(ExceptionFormatter() << "Can't connect to mysql:" << domain << ":" << db);
 				con->setSchema(db.c_str());
+				LOG(INFO) << "Connected to DB Mysql:";
 			}
 		}
 
 		void Execute(std::string sql) {
 			if (con) {
+				LOG(INFO) << "Executing SQL DB Mysql:" << sql;
 				stmt = con->createStatement();
 				stmt->execute(sql.c_str());
 				delete stmt;
@@ -88,17 +92,17 @@ namespace WinMachStat {
 	template <typename T>
 	class DBConnect {
 	public:
-		DBConnect() {
+		DBConnect() : db(NULL){
 		}
 
-		DBConnect(std::string dburl, std::string domain, std::string username, std::string password) {
+		DBConnect(std::string dburl, std::string domain, std::string username, std::string password) : db(NULL) {
 			Connect(dburl, domain, username, password);
 		}
 
 		~DBConnect() {
 			if (db) {
-				db->DisConnect();
-				//delete db;
+				delete db;
+				db = NULL;
 			}
 		}
 
@@ -107,14 +111,28 @@ namespace WinMachStat {
 			if (db) {
 				return 0;
 			} else {
-				db = new T(dburl, password, username, password);
+				db = new T(dburl, domain, username, password);
 				if (db) db->Connect();
+				LOG(INFO) << "Connected DB:" << dburl ;
 			}
 			return 0;
 		}
 
+		void DisConnect()
+		{
+			if (db) {
+				LOG(INFO) << "Disconnecting DB";
+				db->DisConnect();
+			}
+		}
+
 		void operator <<(std::string sql) {
-			if(db) db->Execute(sql);
+			LOG(INFO) << "Called Executing SQL DB:" << sql;
+			if (db) {
+				LOG(INFO) << "Executing SQL DB:" << sql;
+				db->Execute(sql);
+			}
+
 		}
 
 	private:

@@ -55,9 +55,12 @@ namespace WinMachStat {
 
 		void initHTTPServer();
 
+		HTTPServer(const HTTPServer&) = delete;
+
 	public:
 		HTTPServer(std::vector<std::wstring> urls, HTTPRequestHandler rH) ;
-		HTTPServer::~HTTPServer();
+		HTTPServer(HTTPRequestHandler rH);
+		~HTTPServer();
 
 		int Listen(int maxRequest=0);
 	};

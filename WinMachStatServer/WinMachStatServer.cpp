@@ -5,9 +5,9 @@
 
 #include "DBConnect.h"
 
-int HTTPRequestHandler(PHTTP_REQUEST hRequest);
+static int HTTPRequestHandler(PHTTP_REQUEST hRequest);
 
-int HTTPRequestHandler(PHTTP_REQUEST pReq)
+static int HTTPRequestHandler(PHTTP_REQUEST pReq)
 {
 	switch (pReq->Verb)
 	{
