@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<server>
+  <property>
+    <http domain="winmachstat">
+      <host>localhost</host>
+      <port>8088</port>
+    </http>
+  </property>
+  <property>
+    <database name="winmachstat">
+      <host>localhost</host>
+      <port>3306</port>
+      <username>winmachstat</username>
+      <password>winmachstat123</password>
+    </database>
+  </property>
+</server>
