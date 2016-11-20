@@ -2,10 +2,6 @@
 <server>
   <property>
     <http domain="winmachstat">
-      <attr>
-        <alias id="0">localhost</alias>
-        <alias id="1">winmachstat</alias>
-      </attr>
       <host>localhost</host>
       <port>8088</port>
     </http>

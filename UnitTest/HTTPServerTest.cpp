@@ -40,7 +40,7 @@ namespace WinMachStatUnitTest
 			try {
 				httpServer = new WinMachStat::HTTPServer(urls, HTTPRequestHandler);
 				LOG(INFO) << "Starting Server Listening...";
-				httpServer->Listen(2);
+				//httpServer->Listen(2);
 			}
 			catch (WinMachStat::Exception &e) {
 				LOG(INFO) << "Caught exception: " << e.getErrorMsg();

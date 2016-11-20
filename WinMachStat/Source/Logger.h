@@ -9,6 +9,9 @@
 #define ELPP_WINSOCK2
 
 #include "Config.h"
+//#define ELPP_NO_DEFAULT_LOG_FILE ".debug-log.txt"
+#define _ELPP_NO_DEFAULT_LOG_FILE
+#define  _DEBUG
 #include "easylogging++.h"
 #include <string>
 
@@ -22,6 +25,7 @@ class Logger {
 		if (!init) {
 			el::Configurations conf(config.c_str());
 			el::Loggers::reconfigureLogger("default", conf);
+			el::Loggers::addFlag(el::LoggingFlag::ImmediateFlush);
 		}
 
 		return (init = true);
